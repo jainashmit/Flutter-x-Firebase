@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfirebase/utils.dart';
 import 'package:intl/intl.dart';
@@ -48,8 +49,12 @@ class _AddNewTaskState extends State<AddNewTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Add New Task'),
+        leading: BackButton(color: Colors.white,),
+        backgroundColor: Colors.black,
+        elevation: 7,
+        title: const Text('Add New Task' , style: TextStyle(color: Colors.white),),
         actions: [
           GestureDetector(
             onTap: () async {
@@ -66,7 +71,7 @@ class _AddNewTaskState extends State<AddNewTask> {
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(DateFormat('MM-d-y').format(selectedDate)),
+              child: Text(DateFormat('MM-d-y').format(selectedDate) , style: TextStyle(color: CupertinoColors.white),),
             ),
           ),
         ],
@@ -110,12 +115,22 @@ class _AddNewTaskState extends State<AddNewTask> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: titleController,
-                decoration: const InputDecoration(hintText: 'Title'),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                  hintText: 'Title',
+                  fillColor: Colors.white,
+                  filled: true
+                  ),
               ),
               const SizedBox(height: 10),
               TextFormField(
                 controller: descriptionController,
-                decoration: const InputDecoration(hintText: 'Description'),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                  hintText: 'Description',
+                  fillColor: Colors.white,
+                  filled: true
+                  ),
                 // maxLines: 3,
               ),
               const SizedBox(height: 10),
@@ -127,8 +142,15 @@ class _AddNewTaskState extends State<AddNewTask> {
                     _selectedColor = color;
                   });
                 },
-                heading: const Text('Select color'),
-                subheading: const Text('Select a different shade'),
+                selectedPickerTypeColor: Colors.white,
+                pickerTypeTextStyle: const TextStyle(color: Colors.white),
+                heading: const Text('Select color' , style: TextStyle(color: Colors.white),),
+                subheading: const Text('Select a different shade' , style: TextStyle(color: Colors.white),),
+                showMaterialName: true,
+                materialNameTextStyle: const TextStyle(color: Colors.white),
+                showColorName: true,
+                colorNameTextStyle: const TextStyle(color: Colors.white), 
+                borderColor: Colors.white
               ),
               const SizedBox(height: 10),
               ElevatedButton(

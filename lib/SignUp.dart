@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfirebase/Home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -14,11 +14,34 @@ class _SignUpState extends State<SignUp> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  String? errorText;
+
+  Future<bool> isUsernameTaken(String username) async {
+    final doc =
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(username) // since you use username as doc id
+            .get();
+    return doc.exists;
+  }
 
   registration(String email, String password) async {
     try {
+      bool taken = await isUsernameTaken(username);
+
+      if (taken) {
+        setState(() {
+          errorText = "Username already exists";
+        });
+        return; // stop signup
+      }
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseFirestore.instance.collection("Users").doc(username).set({
+        "username": username,
+        "email": email,
+        "uid": FirebaseAuth.instance.currentUser!.uid,
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -29,9 +52,9 @@ class _SignUpState extends State<SignUp> {
         ),
       );
       print(userCredential);
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage()));
+      // Navigator.of(
+      //   context,
+      // ).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -107,9 +130,11 @@ class _SignUpState extends State<SignUp> {
                     },
                     controller: usernameController,
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       hintText: 'Username',
                       fillColor: Colors.white,
                       filled: true,
+                      errorText: errorText
                     ),
                   ),
                   SizedBox(height: 12),
@@ -121,6 +146,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     controller: emailController,
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       hintText: 'E-mail',
                       fillColor: Colors.white,
                       filled: true,
@@ -135,6 +161,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     controller: passController,
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       hintText: 'Password',
                       fillColor: Colors.white,
                       filled: true,

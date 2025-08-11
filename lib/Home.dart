@@ -20,9 +20,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-         
-        title: const Text('My Tasks'),
+        backgroundColor: Colors.black,
+        elevation: 4,
+        shadowColor: Colors.white,
+        title: const Text('My Tasks' , style: TextStyle(color: Colors.white),),
         actions: [
           IconButton(
             onPressed: () {
@@ -31,7 +34,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 MaterialPageRoute(builder: (context) => const AddNewTask()),
               );
             },
-            icon: const Icon(CupertinoIcons.add),
+            icon: const Icon(CupertinoIcons.add , color: Colors.white,),
+          ),
+
+          IconButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
+            icon: Icon(Icons.logout , color: Colors.white,),
           ),
         ],
       ),
@@ -39,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             const DateSelector(),
-            SizedBox(height: 16,),
+            SizedBox(height: 16),
             StreamBuilder(
               stream:
                   FirebaseFirestore.instance

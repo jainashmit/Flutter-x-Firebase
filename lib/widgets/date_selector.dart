@@ -44,6 +44,7 @@ class _DateSelectorState extends State<DateSelector> {
               Text(
                 monthName,
                 style: const TextStyle(
+                  color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -101,7 +102,7 @@ class _DateSelectorState extends State<DateSelector> {
                         Text(
                           DateFormat('d').format(date), // Day of the month
                           style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black87,
+                            color: Colors.white,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
@@ -111,7 +112,7 @@ class _DateSelectorState extends State<DateSelector> {
                           DateFormat('E')
                               .format(date), // Short weekday (Mon, Tue, etc.)
                           style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black87,
+                            color: Colors.white ,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

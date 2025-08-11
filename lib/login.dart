@@ -103,6 +103,7 @@ class _LoginState extends State<Login> {
                   ),
                   Spacer(),
                   TextField(
+                    
                     controller: emailController,
                     onChanged: (value) {
                       setState(() {
@@ -110,6 +111,7 @@ class _LoginState extends State<Login> {
                       });
                     },
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       hintText: 'E-mail',
                       fillColor: Colors.white,
                       filled: true,
@@ -124,6 +126,7 @@ class _LoginState extends State<Login> {
                       });
                     },
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       hintText: 'Password',
                       fillColor: Colors.white,
                       filled: true,
