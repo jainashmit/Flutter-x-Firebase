@@ -30,7 +30,7 @@ class _SignUpState extends State<SignUp> {
     );
     Navigator.of(
       context,
-    ).push(MaterialPageRoute(builder: (context) => HomePage()));
+    ).push(MaterialPageRoute(builder: (context) => MyHomePage()));
     }on FirebaseAuthException catch(e){
       if(e.code == 'weak-password'){
         ScaffoldMessenger.of(context).showSnackBar(
