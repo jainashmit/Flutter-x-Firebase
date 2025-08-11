@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutterfirebase/utils.dart';
 import 'package:intl/intl.dart';
 
-class AddNewTask extends StatefulWidget {
-  const AddNewTask({super.key});
+class UpdateTask extends StatefulWidget {
+  final String docId;
+  UpdateTask({super.key , required this.docId});
 
   @override
-  State<AddNewTask> createState() => _AddNewTaskState();
+  State<UpdateTask> createState() => _UpdateTaskState();
 }
 
-class _AddNewTaskState extends State<AddNewTask> {
+class _UpdateTaskState extends State<UpdateTask> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   DateTime selectedDate = DateTime.now();
@@ -27,18 +28,16 @@ class _AddNewTaskState extends State<AddNewTask> {
     super.dispose();
   }
 
-  Future<void> uploadToDb() async {
+  Future<void> updateToDb() async {
     try {
-      await FirebaseFirestore.instance.collection("tasks").add({
+      await FirebaseFirestore.instance.collection("tasks").doc(widget.docId).update({
         "title": titleController.text.trim(),
         "Description": descriptionController.text.trim(),
         "Date": selectedDate,
-        "creator": FirebaseAuth.instance.currentUser!.uid,
-        "postedAt": FieldValue.serverTimestamp(),
+        "UpdatedAt": FieldValue.serverTimestamp(),
         "Color": rgbToHex(_selectedColor),
       });
     } catch (e) {
-      print("Exception === e");
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("An unexpected error occured")));
@@ -116,7 +115,7 @@ class _AddNewTaskState extends State<AddNewTask> {
               TextFormField(
                 controller: descriptionController,
                 decoration: const InputDecoration(hintText: 'Description'),
-                // maxLines: 3,
+                maxLines: 3,
               ),
               const SizedBox(height: 10),
               ColorPicker(
@@ -133,7 +132,7 @@ class _AddNewTaskState extends State<AddNewTask> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
-                  await uploadToDb();
+                  await updateToDb(); 
                   titleController.clear();
                   descriptionController.clear();
                   Navigator.of(context).pop();

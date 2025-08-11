@@ -18,51 +18,54 @@ class _SignUpState extends State<SignUp> {
   registration(String email, String password) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Registered Successfully',
-          style: TextStyle(color: Colors.black),
+          .createUserWithEmailAndPassword(email: email, password: password);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Registered Successfully',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.blue,
         ),
-        backgroundColor: Colors.red,
-      ),
-    );
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => MyHomePage()));
-    }on FirebaseAuthException catch(e){
-      if(e.code == 'weak-password'){
+      );
+      print(userCredential);
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Provided Password is weak',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
-      }else if(e.code == 'email-already-in-use'){
+          SnackBar(
+            content: Text(
+              'Provided Password is weak',
+              style: TextStyle(color: Colors.black),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } else if (e.code == 'email-already-in-use') {
         ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Email Already exixts. Please Sign-in',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
-      }else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.message ?? 'SignUp failed',
-              style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.red,
-        ));
-      }
-
+          SnackBar(
+            content: Text(
+              'Email Already exixts. Please Sign-in',
+              style: TextStyle(color: Colors.black),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e.message ?? 'SignUp failed',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
-  
+  }
 
   @override
   Widget build(BuildContext context) {

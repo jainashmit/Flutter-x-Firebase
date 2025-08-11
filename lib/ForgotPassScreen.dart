@@ -13,18 +13,41 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   TextEditingController emailController = TextEditingController();
 
   reset(String email) async {
-    try{
+    try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password Reset link sent to email' , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.blue,));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Password Reset link sent to email',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.blue,
+        ),
+      );
       Navigator.of(context).pop();
-    }on FirebaseAuthException catch(e){
-      if(e.code == 'user-not-found'){
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Check your email or SignUp with this email' , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.blue,));
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Check your email or SignUp with this email' , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.blue,));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Check your email ',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e.message ?? 'Error',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
-
   }
 
   @override
@@ -33,14 +56,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: BackButton(color: Colors.white,),
+        leading: BackButton(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
             Text(
               'Reset Password',
               style: TextStyle(
@@ -59,7 +81,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16,),
+            SizedBox(height: 16),
             TextField(
               controller: emailController,
               onChanged: (value) {
@@ -101,7 +123,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
               child: Text('Send', style: TextStyle(color: Colors.black)),
             ),
-            
           ],
         ),
       ),

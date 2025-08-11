@@ -21,9 +21,18 @@ class _LoginState extends State<Login> {
         email: email,
         password: pass,
       );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Login Successfully',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.blue,
+        ),
+      );
       Navigator.of(
         context,
-      ).push(MaterialPageRoute(builder: (context) => MyHomePage()));
+      ).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
